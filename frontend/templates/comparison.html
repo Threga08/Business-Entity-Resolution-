@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Source Comparison | Multi-Source Resolution</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <span class="brand-title">BUSINESS ENTITY RESOLUTION</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/resolver" class="nav-link">Resolver</a>
+        <a href="/comparison" class="nav-link active">Comparison</a>
+        <a href="/evaluation" class="nav-link">Model Performance</a>
+        <a href="/output" class="nav-link">Outputs</a>
+      </nav>
+    </header>
+
+    <!-- Header Card -->
+    <section class="card">
+      <h2>DATA SOURCE COMPARISON</h2>
+      <p>Inspect resolved commercial entities across Source 1, Source 2, and Source 3 side-by-side with noise, abbreviation, and punctuation differences highlighted.</p>
+    </section>
+
+    <!-- Comparison Cards Stream -->
+    <div id="comparison-cards-container" style="display: flex; flex-direction: column; gap: 24px;">
+      <div class="empty-state card">
+        <div class="empty-icon">⏳</div>
+        <h3>Loading Multi-Source Resolved Entities...</h3>
+        <p>Fetching real sample entities resolved across Source 1, Source 2, and Source 3.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("comparison-cards-container");
+      try {
+        const res = await fetch("/api/comparison/sample");
+        const data = await res.json();
+        if (!data.samples || data.samples.length === 0) {
+          container.innerHTML = '<div class="card empty-state"><p>No resolved samples available. Run prediction first.</p></div>';
+          return;
+        }
+
+        container.innerHTML = "";
+        data.samples.forEach((item, idx) => {
+          const s1 = item.s1;
+          const s2 = item.s2;
+          const s3 = item.s3;
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span style="font-weight: 700; font-size: 1.05rem; color: var(--text);">Resolved Entity Cluster #${idx + 1}</span>
+              <span class="badge-high">✓ RESOLVED CLUSTER</span>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="styled-table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Attribute</th>
+                    <th style="width: 26%;">SOURCE 1 (Reference) <br><small class="entity-id-tag">${s1.entity_id}</small></th>
+                    <th style="width: 27%;">SOURCE 2 (Matched) <br><small class="entity-id-tag">${s2.entity_id}</small></th>
+                    <th style="width: 27%;">SOURCE 3 (Matched) <br><small class="entity-id-tag">${s3.entity_id}</small></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Business Name</strong></td>
+                    <td><strong>${s1.business_name}</strong></td>
+                    <td style="color: var(--accent);">${s2.business_name}</td>
+                    <td style="color: var(--emerald);">${s3.business_name}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Address</strong></td>
+                    <td>${s1.business_address || '<span style="color:var(--text-dim)">(Empty)</span>'}</td>
+                    <td>${s2.business_address || '<span style="color:var(--text-dim)">(Empty)</span>'}</td>
+                    <td>${s3.business_address || '<span style="color:var(--text-dim)">(Empty)</span>'}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Country</strong></td>
+                    <td><span class="entity-id-tag">${s1.country}</span></td>
+                    <td><span class="entity-id-tag">${s2.country}</span></td>
+                    <td><span class="entity-id-tag">${s3.country}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (e) {
+        container.innerHTML = `<div class="card empty-state"><p class="text-rose">Error loading comparison: ${e.message}</p></div>`;
+      }
+    });
+  </script>
+</body>
+</html>

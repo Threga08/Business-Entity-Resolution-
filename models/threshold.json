@@ -1,0 +1,66 @@
+{
+  "best_threshold": 0.95,
+  "validation_macro_f05": 0.9437,
+  "grid_results": [
+    {
+      "threshold": 0.5,
+      "macro_f05": 0.9026,
+      "macro_precision": 0.9326,
+      "macro_recall": 0.9074
+    },
+    {
+      "threshold": 0.55,
+      "macro_f05": 0.9084,
+      "macro_precision": 0.9395,
+      "macro_recall": 0.907
+    },
+    {
+      "threshold": 0.6,
+      "macro_f05": 0.915,
+      "macro_precision": 0.9471,
+      "macro_recall": 0.9066
+    },
+    {
+      "threshold": 0.65,
+      "macro_f05": 0.9206,
+      "macro_precision": 0.9545,
+      "macro_recall": 0.9065
+    },
+    {
+      "threshold": 0.7,
+      "macro_f05": 0.9261,
+      "macro_precision": 0.9613,
+      "macro_recall": 0.9059
+    },
+    {
+      "threshold": 0.75,
+      "macro_f05": 0.9304,
+      "macro_precision": 0.9703,
+      "macro_recall": 0.9049
+    },
+    {
+      "threshold": 0.8,
+      "macro_f05": 0.9348,
+      "macro_precision": 0.9765,
+      "macro_recall": 0.9037
+    },
+    {
+      "threshold": 0.85,
+      "macro_f05": 0.9376,
+      "macro_precision": 0.9801,
+      "macro_recall": 0.9033
+    },
+    {
+      "threshold": 0.9,
+      "macro_f05": 0.9411,
+      "macro_precision": 0.9854,
+      "macro_recall": 0.9021
+    },
+    {
+      "threshold": 0.95,
+      "macro_f05": 0.9437,
+      "macro_precision": 0.9894,
+      "macro_recall": 0.9003
+    }
+  ]
+}

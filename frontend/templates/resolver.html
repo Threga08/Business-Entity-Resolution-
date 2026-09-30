@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entity Resolution Workspace | Search & Match</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <span class="brand-title">BUSINESS ENTITY RESOLUTION</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/resolver" class="nav-link active">Resolver</a>
+        <a href="/comparison" class="nav-link">Comparison</a>
+        <a href="/evaluation" class="nav-link">Model Performance</a>
+        <a href="/output" class="nav-link">Outputs</a>
+      </nav>
+    </header>
+
+    <!-- Workspace Layout -->
+    <div class="workspace-layout">
+      <!-- Left Panel: Search Source 1 Entity -->
+      <aside class="card search-panel">
+        <div>
+          <h2>SEARCH SOURCE 1 ENTITY</h2>
+          <p style="font-size: 0.85rem;">Select from reference dataset or test custom business details.</p>
+        </div>
+
+        <!-- Quick Autocomplete Search -->
+        <div class="input-group">
+          <label class="input-label" for="s1-search-input">Quick Search Reference Source 1</label>
+          <input type="text" id="s1-search-input" class="input-field" placeholder="Search by ID, business name, or city...">
+          <div id="search-dropdown" class="search-results-dropdown" style="display: none;"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin: 4px 0;">
+          <div style="flex: 1; height: 1px; background: var(--border);"></div>
+          <span style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">OR Enter Manually</span>
+          <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        </div>
+
+        <!-- Manual Input Fields -->
+        <div class="input-group">
+          <label class="input-label" for="input-s1-id">Source 1 ID</label>
+          <input type="text" id="input-s1-id" class="input-field" placeholder="e.g. S1-444149322 or MANUAL">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="input-bname">Business Name *</label>
+          <input type="text" id="input-bname" class="input-field" placeholder="e.g. White, Helge W., DDS">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="input-baddr">Business Address</label>
+          <input type="text" id="input-baddr" class="input-field" placeholder="e.g. 12007 Rock Spring Dr, Coldstream, KY">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="input-bctry">Country</label>
+          <input type="text" id="input-bctry" class="input-field" placeholder="e.g. US or India">
+        </div>
+
+        <button id="btn-load-entity" class="btn btn-secondary" style="width: 100%;">
+          <span>🔍</span> Set as Current Source 1
+        </button>
+      </aside>
+
+      <!-- Right Panel: Active Entity & Real Matching Results -->
+      <main class="main-content" style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Selected Source 1 Record Card -->
+        <section class="card source1-hero-card" id="s1-active-card">
+          <div class="s1-header">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Source 1 Reference Business</span>
+            <span id="active-s1-id" class="entity-id-tag">S1-444149322</span>
+          </div>
+
+          <div id="active-s1-name" class="s1-name">White, Helge W., DDS</div>
+
+          <div class="s1-details-row">
+            <div>
+              <span style="color: var(--text-dim);">Address:</span>
+              <strong id="active-s1-addr" style="color: var(--text); margin-left: 4px;">12007 Rock Spring Dr, Coldstream, KY</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-dim);">Country:</span>
+              <strong id="active-s1-ctry" style="color: var(--text); margin-left: 4px;">US</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+            <button id="btn-find-matches" class="btn btn-primary btn-lg">
+              <span>⚡</span> FIND MATCHES
+            </button>
+          </div>
+        </section>
+
+        <!-- Matching Results Container -->
+        <section id="results-wrapper" class="card matches-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+            <div>
+              <h2>MATCHING RESULTS</h2>
+              <p id="results-summary-text" style="font-size: 0.85rem;">Click "FIND MATCHES" to run normalization, inverted blocking, 29 feature calculations, and ML prediction.</p>
+            </div>
+            <div id="results-meta-badge"></div>
+          </div>
+
+          <!-- Matches Lists (S2 and S3) -->
+          <div id="matches-display-area" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Placeholder before run -->
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <h3>Ready to Resolve</h3>
+              <p>Select a Source 1 business and click "FIND MATCHES". The real ML pipeline will evaluate candidates from Source 2 and Source 3.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Match Explanation Modal -->
+  <div id="explanation-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3>MATCH EXPLANATION & EVIDENCE</h3>
+          <p style="font-size: 0.8rem;">Feature vectors and similarity metrics computed by the ML pipeline.</p>
+        </div>
+        <button id="btn-close-modal" class="close-btn">&times;</button>
+      </div>
+
+      <!-- Side-by-side comparison -->
+      <div class="compare-grid">
+        <div class="compare-col">
+          <h4>SOURCE 1</h4>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">NAME</div>
+            <strong id="modal-s1-name" style="font-size: 0.95rem;">--</strong>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">ADDRESS</div>
+            <span id="modal-s1-addr" style="font-size: 0.85rem; color: var(--text-muted);">--</span>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">COUNTRY</div>
+            <span id="modal-s1-ctry" style="font-size: 0.85rem; color: var(--text);">--</span>
+          </div>
+        </div>
+
+        <div class="compare-col" style="border-color: rgba(99, 102, 241, 0.3);">
+          <h4 id="modal-target-source-title">MATCH CANDIDATE</h4>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">NAME</div>
+            <strong id="modal-tgt-name" style="font-size: 0.95rem; color: var(--accent);">--</strong>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">ADDRESS</div>
+            <span id="modal-tgt-addr" style="font-size: 0.85rem; color: var(--text-muted);">--</span>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);">COUNTRY</div>
+            <span id="modal-tgt-ctry" style="font-size: 0.85rem; color: var(--text);">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evidence Bars -->
+      <div class="evidence-section card" style="background: rgba(0,0,0,0.3); padding: 18px;">
+        <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">MATCHING EVIDENCE</h4>
+
+        <div class="evidence-row">
+          <div class="evidence-label">
+            <span>Business Name Similarity</span>
+            <strong id="modal-bar-name-val">--%</strong>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="modal-bar-name-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="evidence-row">
+          <div class="evidence-label">
+            <span>Address Similarity</span>
+            <strong id="modal-bar-addr-val">--%</strong>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="modal-bar-addr-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="evidence-row">
+          <div class="evidence-label">
+            <span>Country Agreement</span>
+            <strong id="modal-bar-ctry-val">--</strong>
+          </div>
+        </div>
+
+        <div class="evidence-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+          <div class="evidence-label" style="font-size: 0.95rem;">
+            <span>Overall Model Confidence</span>
+            <strong id="modal-bar-conf-val" class="text-accent" style="font-size: 1.15rem;">--%</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature table detail -->
+      <div>
+        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;">Computed Feature Values</h4>
+        <div class="table-wrapper" style="max-height: 180px;">
+          <table class="styled-table" id="modal-features-table">
+            <thead>
+              <tr>
+                <th>Feature Name</th>
+                <th>Calculated Value</th>
+              </tr>
+            </thead>
+            <tbody id="modal-features-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

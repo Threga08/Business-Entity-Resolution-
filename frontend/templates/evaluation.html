@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Performance & Evaluation | Macro F0.5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <span class="brand-title">BUSINESS ENTITY RESOLUTION</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/resolver" class="nav-link">Resolver</a>
+        <a href="/comparison" class="nav-link">Comparison</a>
+        <a href="/evaluation" class="nav-link active">Model Performance</a>
+        <a href="/output" class="nav-link">Outputs</a>
+      </nav>
+    </header>
+
+    <!-- Header Card -->
+    <section class="card">
+      <h2>MODEL PERFORMANCE & VALIDATION METRICS</h2>
+      <p>Ground-truth evaluated metrics on the held-out validation dataset (grouped strictly by Source 1 entity to eliminate data leakage).</p>
+    </section>
+
+    <!-- KPI Grid -->
+    <div id="eval-metrics-grid" class="feature-grid">
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Validation Macro F0.5</div>
+        <div id="eval-macro-f05" style="font-size: 2rem; font-weight: 700; color: var(--accent); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Competition Primary Metric</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Validation Precision</div>
+        <div id="eval-precision" style="font-size: 2rem; font-weight: 700; color: var(--emerald); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Exact Positive Prediction Rate</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Validation Recall</div>
+        <div id="eval-recall" style="font-size: 2rem; font-weight: 700; color: var(--cyan); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">True Pair Retrieval Rate</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Selected Threshold</div>
+        <div id="eval-threshold" style="font-size: 2rem; font-weight: 700; color: var(--violet); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Optimal F0.5 Cutoff</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Candidate Recall</div>
+        <div id="eval-cand-recall" style="font-size: 2rem; font-weight: 700; color: var(--emerald); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Blocking Coverage</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 600;">Space Reduction</div>
+        <div id="eval-cand-reduction" style="font-size: 2rem; font-weight: 700; color: var(--accent); margin: 6px 0;">--</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">O(N²) Pruning Ratio</div>
+      </div>
+    </div>
+
+    <!-- Threshold Grid Table -->
+    <section class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <h3>Validation Threshold Grid Search</h3>
+          <p style="font-size: 0.85rem;">Comparing classification thresholds to maximize precision-weighted Macro F0.5.</p>
+        </div>
+        <span class="badge-high">LEAKAGE-PROOF SPLIT</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="styled-table" id="threshold-comp-table">
+          <thead>
+            <tr>
+              <th>Threshold</th>
+              <th>Validation Macro F0.5</th>
+              <th>Macro Precision</th>
+              <th>Macro Recall</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="threshold-comp-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 24px;">Loading evaluation metrics...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("/api/evaluation");
+        const data = await res.json();
+        if (!data.has_evaluation) {
+          document.getElementById("threshold-comp-body").innerHTML = `
+            <tr><td colspan="5" style="text-align:center; padding:30px; font-style:italic; color:var(--text-dim);">
+              ${data.message || 'Model evaluation has not been run yet.'}
+            </td></tr>
+          `;
+          return;
+        }
+
+        document.getElementById("eval-macro-f05").textContent = data.macro_f05.toFixed(4);
+        document.getElementById("eval-precision").textContent = data.precision.toFixed(4);
+        document.getElementById("eval-recall").textContent = data.recall.toFixed(4);
+        document.getElementById("eval-threshold").textContent = data.selected_threshold.toFixed(2);
+        document.getElementById("eval-cand-recall").textContent = data.candidate_recall;
+        document.getElementById("eval-cand-reduction").textContent = data.candidate_reduction;
+
+        const body = document.getElementById("threshold-comp-body");
+        body.innerHTML = "";
+        data.threshold_comparison.forEach(row => {
+          const isBest = Math.abs(parseFloat(row.threshold) - parseFloat(data.selected_threshold)) < 0.001;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="${isBest ? 'font-weight:700; color:var(--accent);' : ''}">${parseFloat(row.threshold).toFixed(2)}</td>
+            <td style="${isBest ? 'font-weight:700; color:var(--cyan);' : ''}">${row.macro_f05.toFixed(4)}</td>
+            <td>${row.macro_precision.toFixed(4)}</td>
+            <td>${row.macro_recall.toFixed(4)}</td>
+            <td>${isBest ? '<span class="badge-high">Optimal Selected</span>' : '<span style="color:var(--text-dim);">Evaluated</span>'}</td>
+          `;
+          body.appendChild(tr);
+        });
+      } catch (e) {
+        console.error("Evaluation load error:", e);
+      }
+    });
+  </script>
+</body>
+</html>
