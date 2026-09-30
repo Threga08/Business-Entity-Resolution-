@@ -153,69 +153,128 @@ class RealTimeMatcher:
         # Step 4: ML Model Probability Prediction
         probabilities = self.model.predict_proba(X)[:, 1]
 
-        # Step 5: Rank & Filter Matches
-        matched_candidates = []
+        # Step 5: Rank & Generate Human-Understandable Evidence
+        candidates_list = []
         for i, tid in enumerate(candidate_ids):
             prob = float(probabilities[i])
-            if prob >= active_threshold:
-                tgt_rec = self.target_records.get(tid, {})
-                f = raw_feats_list[i]
+            tgt_rec = self.target_records.get(tid, {})
+            f = raw_feats_list[i]
 
-                # Confidence category
-                conf_pct = round(prob * 100, 1)
-                if conf_pct >= 90.0:
-                    badge_class = "badge-high"
-                    badge_label = "HIGH CONFIDENCE MATCH"
-                elif conf_pct >= 75.0:
-                    badge_class = "badge-likely"
-                    badge_label = "LIKELY MATCH"
+            conf_pct = round(prob * 100, 1)
+            name_sim_pct = round(f["feat_name_sim"] * 100, 1)
+            addr_sim_pct = round(f["feat_addr_sim"] * 100, 1)
+
+            # Human-understandable evidence bullets
+            evidence_bullets = []
+            
+            # Name evidence
+            if name_sim_pct >= 85.0:
+                evidence_bullets.append(f"✓ Business names are very similar ({name_sim_pct}% match)")
+                name_status = "Strong match"
+            elif name_sim_pct >= 60.0:
+                evidence_bullets.append(f"✓ Business names are similar ({name_sim_pct}% match)")
+                name_status = "Similar"
+            else:
+                evidence_bullets.append(f"✕ Business names have low overlap ({name_sim_pct}% match)")
+                name_status = "Partial match"
+
+            # Address evidence
+            s1_has_addr = bool(s1_rec.get("business_address", "").strip())
+            tgt_has_addr = bool(tgt_rec.get("business_address", "").strip())
+            if s1_has_addr and tgt_has_addr:
+                if addr_sim_pct >= 75.0:
+                    evidence_bullets.append(f"✓ Addresses contain matching information ({addr_sim_pct}% match)")
+                    addr_status = "Strong match"
+                elif addr_sim_pct >= 40.0:
+                    evidence_bullets.append(f"✓ Addresses share location elements ({addr_sim_pct}% match)")
+                    addr_status = "Partial match"
                 else:
-                    badge_class = "badge-possible"
-                    badge_label = "POSSIBLE MATCH"
+                    evidence_bullets.append(f"✕ Addresses appear different ({addr_sim_pct}% match)")
+                    addr_status = "Different"
+            else:
+                addr_status = "No address recorded"
 
-                matched_candidates.append({
-                    "target_id": tid,
-                    "target_source": "Source 2" if (tid.startswith("S2-") or "-2-" in tid) else "Source 3",
-                    "business_name": tgt_rec.get("business_name", ""),
-                    "business_address": tgt_rec.get("business_address", ""),
-                    "country": tgt_rec.get("country", ""),
-                    "confidence_score": prob,
-                    "confidence_pct": conf_pct,
-                    "badge_class": badge_class,
-                    "badge_label": badge_label,
-                    "name_similarity_pct": round(f["feat_name_sim"] * 100, 1),
-                    "token_sort_sim_pct": round(f["feat_token_sort_sim"] * 100, 1),
-                    "address_similarity_pct": round(f["feat_addr_sim"] * 100, 1),
-                    "country_match": "MATCH" if f["feat_country_eq"] == 1.0 else ("DIFFERENT" if f["feat_country_diff"] == 1.0 else "MISSING"),
-                    "shared_numbers": list(s1_rec["address_numbers"] & tgt_rec.get("address_numbers", set())),
-                    "shared_postal": f["feat_has_shared_postal"] == 1.0,
-                    "triggered_rules": list(cand_rules_map[tid]),
-                    "features_detail": f
-                })
+            # Country evidence
+            if f["feat_country_eq"] == 1.0:
+                country_val = s1_rec.get("country", "") or tgt_rec.get("country", "")
+                evidence_bullets.append(f"✓ Country matches ({country_val})")
+                country_status = "Exact match"
+            elif f["feat_country_diff"] == 1.0:
+                c1 = s1_rec.get("country", "Unknown")
+                c2 = tgt_rec.get("country", "Unknown")
+                evidence_bullets.append(f"✕ Different country ({c1} vs {c2})")
+                country_status = "Different"
+            else:
+                country_status = "Unknown / Missing"
+
+            # Overall confidence tier & badge
+            if conf_pct >= 90.0:
+                tier = "High Confidence"
+                badge_class = "badge-high"
+                evidence_bullets.append("✓ Strong overall model evidence")
+            elif conf_pct >= 70.0:
+                tier = "Medium Confidence"
+                badge_class = "badge-likely"
+                evidence_bullets.append("✓ Moderate overall evidence")
+            else:
+                tier = "Low Confidence"
+                badge_class = "badge-possible"
+                evidence_bullets.append("✕ Weak overall evidence (Review needed)")
+
+            candidates_list.append({
+                "target_id": tid,
+                "target_source": "Source 2" if (tid.startswith("S2-") or "-2-" in tid) else "Source 3",
+                "business_name": tgt_rec.get("business_name", ""),
+                "business_address": tgt_rec.get("business_address", ""),
+                "country": tgt_rec.get("country", ""),
+                "confidence_score": prob,
+                "confidence_pct": conf_pct,
+                "confidence_tier": tier,
+                "badge_class": badge_class,
+                "is_recommended": prob >= active_threshold,
+                "evidence_bullets": evidence_bullets,
+                "comparison_summary": {
+                    "name_status": name_status,
+                    "address_status": addr_status,
+                    "country_status": country_status,
+                    "name_sim_pct": name_sim_pct,
+                    "address_sim_pct": addr_sim_pct
+                },
+                "name_similarity_pct": name_sim_pct,
+                "address_similarity_pct": addr_sim_pct,
+                "country_match": country_status,
+                "triggered_rules": list(cand_rules_map[tid])
+            })
 
         # Sort descending by confidence
-        matched_candidates.sort(key=lambda x: x["confidence_score"], reverse=True)
+        candidates_list.sort(key=lambda x: x["confidence_score"], reverse=True)
 
-        s2_matches = [m for m in matched_candidates if m["target_source"] == "Source 2"]
-        s3_matches = [m for m in matched_candidates if m["target_source"] == "Source 3"]
+        s2_candidates = [c for c in candidates_list if c["target_source"] == "Source 2"]
+        s3_candidates = [c for c in candidates_list if c["target_source"] == "Source 3"]
+        highest_conf = candidates_list[0]["confidence_score"] if candidates_list else 0.0
 
-        has_matches = len(matched_candidates) > 0
+        has_reliable_match = any(c["is_recommended"] for c in candidates_list)
 
         return {
             "source1": {
                 "entity_id": source1_id,
                 "business_name": business_name,
                 "business_address": business_address,
-                "country": country,
-                "norm_name": norm_name,
-                "norm_address": norm_addr
+                "country": country
             },
-            "has_matches": has_matches,
+            "has_matches": has_reliable_match,
+            "highest_confidence": round(highest_conf, 4),
+            "highest_confidence_pct": round(highest_conf * 100, 1),
             "threshold_used": active_threshold,
             "total_candidates_blocked": len(candidate_ids),
-            "total_matches_found": len(matched_candidates),
-            "source2_matches": s2_matches,
-            "source3_matches": s3_matches,
-            "all_matches": matched_candidates,
-            "message": "" if has_matches else "NO RELIABLE MATCH FOUND. The business may be a singleton or the available records may not contain a sufficiently similar candidate."
+            "source2_count": len(s2_candidates),
+            "source3_count": len(s3_candidates),
+            "source2_candidates": s2_candidates[:10],
+            "source3_candidates": s3_candidates[:10],
+            "all_candidates": candidates_list[:15],
+            "status_message": (
+                f"{len(candidates_list)} potential candidate(s) identified across Source 2 and Source 3."
+                if candidates_list
+                else "No reliable match found. The business may be a singleton or the available records may not contain a sufficiently similar candidate."
+            )
         }

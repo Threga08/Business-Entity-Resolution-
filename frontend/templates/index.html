@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Entity Resolution Studio</title>
+  <title>Business Entity Resolution - Operations Suite</title>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <div class="app-shell">
-    <!-- Left Sidebar -->
+    <!-- Left Sidebar (Premium Black Theme) -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-brand">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
-          <span>Entity Resolution</span>
+          <span>Business Entity Resolution</span>
         </div>
       </div>
 
@@ -29,323 +28,526 @@
           <span class="nav-icon">🔍</span>
           <span>Entity Search</span>
         </a>
-        <a class="nav-item" data-tab="tab-matching">
-          <span class="nav-icon">⚡</span>
-          <span>Find Matches</span>
+        <a class="nav-item" data-tab="tab-queue">
+          <span class="nav-icon">📋</span>
+          <span>Review Queue</span>
         </a>
         <a class="nav-item" data-tab="tab-batch">
           <span class="nav-icon">📂</span>
           <span>Batch Matching</span>
         </a>
-        <a class="nav-item" data-tab="tab-performance">
-          <span class="nav-icon">📊</span>
-          <span>Model Performance</span>
+        <a class="nav-item" data-tab="tab-resolved">
+          <span class="nav-icon">⚖️</span>
+          <span>Resolved Entities</span>
+        </a>
+        <a class="nav-item" data-tab="tab-history">
+          <span class="nav-icon">🕒</span>
+          <span>History</span>
+        </a>
+        <a class="nav-item" data-tab="tab-settings">
+          <span class="nav-icon">⚙️</span>
+          <span>Settings</span>
         </a>
       </nav>
 
       <div class="sidebar-footer">
-        <div>Supervised ML Pipeline v1.0</div>
-        <div style="color: var(--primary); font-weight: 600; margin-top: 2px;">Light Theme Active</div>
+        <div>System Status</div>
+        <div class="system-status-indicator">
+          <span class="system-status-dot"></span>
+          <span>Ready</span>
+        </div>
       </div>
     </aside>
 
     <!-- Main Content Wrapper -->
     <div class="main-wrapper">
       <header class="topbar">
-        <div id="topbar-breadcrumb" class="topbar-title">Home Overview</div>
-        <div class="system-badge">● Pipeline Online (10K Sample)</div>
+        <div id="topbar-breadcrumb" class="topbar-title">Home</div>
+        <div class="topbar-actions">
+          <span class="analyst-pill" id="topbar-analyst">Analyst: Operations Lead</span>
+          <span class="badge badge-high">● ML Engine Active</span>
+        </div>
       </header>
 
       <main class="content-container">
-        <!-- ── TAB 1: HOME PAGE ─────────────────────────────────────────── -->
+        <!-- ── TAB 1: HOME WORKSPACE ─────────────────────────────────────── -->
         <section id="tab-home" class="tab-panel active">
-          <div class="hero-card">
+          <div class="hero-banner">
             <h1>BUSINESS ENTITY RESOLUTION</h1>
-            <p class="hero-subtitle">
-              Find matching businesses across multiple independent data sources.
-            </p>
-            <button id="btn-start-matching" class="btn btn-primary btn-lg">
-              START MATCHING &rarr;
-            </button>
+            <p>Review, verify and resolve business records across multiple data sources.</p>
+            <div class="hero-actions">
+              <button id="hero-btn-search" class="btn btn-primary btn-lg">Search a Business</button>
+              <button id="hero-btn-batch" class="btn btn-secondary btn-lg">Start Batch Review</button>
+              <button id="hero-btn-upload" class="btn btn-secondary btn-lg">Upload Records</button>
+            </div>
           </div>
 
-          <div class="home-feature-grid">
-            <div class="feature-box">
-              <div class="feature-box-icon">🔍</div>
-              <h3>ENTITY SEARCH</h3>
-              <p>Search and inspect Source 1 reference businesses by name, address, entity ID, or country.</p>
+          <!-- Operational KPI Information (from actual SQLite database) -->
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <span class="kpi-title">Pending Reviews</span>
+              <span id="kpi-pending" class="kpi-value">0</span>
+              <span class="kpi-subtext">Awaiting analyst action</span>
             </div>
-
-            <div class="feature-box">
-              <div class="feature-box-icon">⚡</div>
-              <h3>SMART MATCHING</h3>
-              <p>Find potential matches in Source 2 and Source 3 using multi-key blocking and supervised ML.</p>
+            <div class="kpi-card">
+              <span class="kpi-title">Confirmed Matches</span>
+              <span id="kpi-confirmed" class="kpi-value text-success" style="color: var(--success);">0</span>
+              <span class="kpi-subtext">Verified links</span>
             </div>
+            <div class="kpi-card">
+              <span class="kpi-title">Rejected Matches</span>
+              <span id="kpi-rejected" class="kpi-value text-error" style="color: var(--error);">0</span>
+              <span class="kpi-subtext">Flagged as non-matches</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-title">Today's Processed Records</span>
+              <span id="kpi-today" class="kpi-value" style="color: var(--primary);">0</span>
+              <span class="kpi-subtext">Analyst activity today</span>
+            </div>
+          </div>
 
-            <div class="feature-box">
-              <div class="feature-box-icon">💡</div>
-              <h3>MATCH EXPLANATION</h3>
-              <p>Understand why the model considers records similar with transparent feature evidence bars.</p>
+          <!-- Workflow Guide -->
+          <div class="card">
+            <h3 style="margin-bottom: 12px; font-size: 1rem;">Operational Workflow</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+              <div style="background: var(--bg-card-secondary); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div style="color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;">STEP 1</div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px;">Search Business</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Query reference businesses by name, address, ID, or country.</div>
+              </div>
+              <div style="background: var(--bg-card-secondary); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div style="color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;">STEP 2</div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px;">Compare Evidence</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Inspect side-by-side similarity, address tokens, and country match.</div>
+              </div>
+              <div style="background: var(--bg-card-secondary); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div style="color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;">STEP 3</div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px;">Make Decision</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Confirm match, reject false link, or queue for review later.</div>
+              </div>
+              <div style="background: var(--bg-card-secondary); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div style="color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;">STEP 4</div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px;">Next Record</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Seamlessly advance through queues and export verified outputs.</div>
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- ── TAB 2: ENTITY SEARCH PAGE ─────────────────────────────────── -->
+        <!-- ── TAB 2: ENTITY SEARCH ──────────────────────────────────────── -->
         <section id="tab-search" class="tab-panel">
           <div class="card">
             <div class="card-header">
               <div>
                 <h2 class="card-title">Entity Search</h2>
-                <p class="card-desc">Search the reference Source 1 dataset by business name, entity ID, address, or country.</p>
+                <p class="card-subtitle">Search reference Source 1 businesses by name, entity ID, address, or country.</p>
               </div>
             </div>
 
-            <div class="search-bar-container">
-              <input type="text" id="global-search-input" class="form-input" placeholder="Type a business name (e.g. White, Helge W.), entity ID, or city...">
-              <button id="btn-trigger-search" class="btn btn-primary" style="white-space: nowrap;">
-                <span>🔍</span> Search Entities
+            <div class="search-bar-row">
+              <input type="text" id="search-input-box" class="form-input search-input-field" placeholder="Search business (e.g. ABC Technologies, White Helge, S1-444149322)...">
+              <select id="search-country-select" class="form-select" style="min-width: 160px;">
+                <option value="">Country: All Countries</option>
+              </select>
+              <button id="btn-do-search" class="btn btn-primary">
+                <span>🔍</span> Search
               </button>
             </div>
 
-            <div id="search-status-bar" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+            <div id="search-results-status" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
               Showing sample reference entities.
             </div>
 
-            <div id="search-results-container" class="search-results-list">
+            <div id="search-results-list">
               <!-- Dynamically populated -->
             </div>
           </div>
         </section>
 
-        <!-- ── TAB 3: FIND MATCHES (MATCHING PAGE) ───────────────────────── -->
+        <!-- ── TAB 3: MATCHING WORKSPACE & BUSINESS PROFILE ─────────────── -->
         <section id="tab-matching" class="tab-panel">
-          <div class="matching-layout">
-            <!-- Left: Source 1 Reference Details -->
-            <div class="source1-card">
+          <!-- Profile Header -->
+          <div class="card" style="padding: 16px 22px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
               <div>
-                <span class="source1-label">REFERENCE BUSINESS</span>
-                <h3 id="match-s1-name" style="font-size: 1.25rem; color: var(--text-primary); margin-top: 4px;">White, Helge W., DDS</h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <h2 id="profile-bname" style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary);">White, Helge W., DDS</h2>
+                  <span id="profile-id-pill" class="entity-id-pill">S1-444149322</span>
+                </div>
+                <div style="font-size: 0.83rem; color: var(--text-secondary); margin-top: 3px;">
+                  Status: <span id="profile-status" class="badge badge-neutral">Pending Review</span>
+                </div>
               </div>
-
-              <div class="source1-field">
-                <span class="source1-label">Entity ID</span>
-                <span id="match-s1-id" class="entity-id-pill">S1-444149322</span>
-              </div>
-
-              <div class="source1-field">
-                <span class="source1-label">Address</span>
-                <span id="match-s1-addr" class="source1-val">12007 Rock Spring Dr, Coldstream, KY</span>
-              </div>
-
-              <div class="source1-field">
-                <span class="source1-label">Country</span>
-                <span id="match-s1-ctry" class="source1-val">US</span>
-              </div>
-
-              <div style="margin-top: 10px;">
-                <button id="btn-run-match" class="btn btn-primary" style="width: 100%;">
-                  <span>⚡</span> FIND MATCHES
+              <div>
+                <button id="btn-next-business-top" class="btn btn-secondary">
+                  <span>Next Business &rarr;</span>
                 </button>
               </div>
+            </div>
+          </div>
 
-              <div style="font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 12px;">
-                Blocks against 30,720 target entities from S2 & S3 and scores with trained Logistic Regression model.
+          <!-- Matching Workspace Grid -->
+          <div class="workspace-grid">
+            <!-- Left: Source 1 Reference Details -->
+            <div class="source1-profile-box">
+              <div class="profile-field-group">
+                <div class="profile-label">Source Record</div>
+                <div class="profile-val" style="font-weight: 600; color: var(--primary);">Source 1 (Reference)</div>
+              </div>
+
+              <div class="profile-field-group">
+                <div class="profile-label">Entity ID</div>
+                <div id="s1-field-id" class="entity-id-pill">S1-444149322</div>
+              </div>
+
+              <div class="profile-field-group">
+                <div class="profile-label">Business Name</div>
+                <div id="s1-field-name" class="profile-val" style="font-weight: 600;">White, Helge W., DDS</div>
+              </div>
+
+              <div class="profile-field-group">
+                <div class="profile-label">Business Address</div>
+                <div id="s1-field-addr" class="profile-val" style="color: var(--text-secondary);">(No address specified)</div>
+              </div>
+
+              <div class="profile-field-group">
+                <div class="profile-label">Country</div>
+                <div id="s1-field-ctry" class="entity-id-pill">US</div>
+              </div>
+
+              <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                <button id="btn-re-run-matching" class="btn btn-primary" style="width: 100%;">
+                  <span>⚡</span> Find Matches
+                </button>
               </div>
             </div>
 
-            <!-- Right: Potential Matches & Explanation -->
-            <div>
-              <div class="card" style="margin-bottom: 20px;">
-                <div class="card-header">
-                  <div>
-                    <h2 class="card-title">POTENTIAL MATCHES</h2>
-                    <p id="match-results-summary" class="card-desc">Click "FIND MATCHES" to run the entity-resolution pipeline.</p>
-                  </div>
-                </div>
-
-                <div id="match-candidates-list" class="match-candidates-container">
-                  <div class="empty-box">
-                    <p>Select a Source 1 business and click "FIND MATCHES" to view matching candidates.</p>
+            <!-- Right: Ranked Potential Matches List -->
+            <div class="candidates-list-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <div>
+                  <h3 style="font-size: 1.05rem; font-weight: 600;">Potential Matches</h3>
+                  <div id="candidates-count-summary" style="font-size: 0.8rem; color: var(--text-muted);">
+                    Select a candidate below to compare evidence.
                   </div>
                 </div>
               </div>
 
-              <!-- Match Explanation Card (Why this match?) -->
-              <div id="match-explanation-box" class="explanation-card" style="display: none;">
-                <div class="card-header">
-                  <div>
-                    <h3 class="card-title" style="color: var(--primary);">WHY THIS MATCH?</h3>
-                    <p id="expl-candidate-sub" class="card-desc">Similarity feature evidence computed by the model.</p>
-                  </div>
-                  <span id="expl-candidate-badge" class="badge badge-high">HIGH CONFIDENCE</span>
-                </div>
+              <div id="candidates-ranked-list">
+                <!-- Ranked candidate items -->
+              </div>
+            </div>
+          </div>
 
-                <div class="progress-row">
-                  <div class="progress-header">
-                    <span>Business Name Similarity</span>
-                    <span id="expl-name-sim">94%</span>
-                  </div>
-                  <div class="progress-track">
-                    <div id="expl-name-fill" class="progress-fill" style="width: 94%;"></div>
-                  </div>
-                </div>
+          <!-- Match Evidence & Side-by-Side Comparison -->
+          <div id="comparison-section" class="comparison-container" style="display: none;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Match Comparison</h3>
+                <p class="card-subtitle">Side-by-side inspection between Source 1 reference and selected candidate.</p>
+              </div>
+              <div id="comparison-overall-badge">
+                <!-- Confidence badge -->
+              </div>
+            </div>
 
-                <div class="progress-row">
-                  <div class="progress-header">
-                    <span>Address Similarity</span>
-                    <span id="expl-addr-sim">97%</span>
-                  </div>
-                  <div class="progress-track">
-                    <div id="expl-addr-fill" class="progress-fill" style="width: 97%;"></div>
-                  </div>
-                </div>
+            <!-- Side-by-side Table -->
+            <table class="side-by-side-table">
+              <thead>
+                <tr>
+                  <th style="width: 22%;">Attribute</th>
+                  <th style="width: 39%;">Source 1 (Reference)</th>
+                  <th style="width: 39%;" id="th-candidate-header">Selected Candidate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Business Name</strong></td>
+                  <td id="comp-s1-name">-</td>
+                  <td id="comp-cand-name" style="color: var(--primary); font-weight: 600;">-</td>
+                </tr>
+                <tr>
+                  <td><strong>Address</strong></td>
+                  <td id="comp-s1-addr">-</td>
+                  <td id="comp-cand-addr">-</td>
+                </tr>
+                <tr>
+                  <td><strong>Country</strong></td>
+                  <td><span id="comp-s1-ctry" class="entity-id-pill">-</span></td>
+                  <td><span id="comp-cand-ctry" class="entity-id-pill">-</span></td>
+                </tr>
+              </tbody>
+            </table>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 16px;">
-                  <span style="font-size: 0.85rem; font-weight: 600;">Country Agreement</span>
-                  <span id="expl-country-status" class="badge badge-high">MATCH</span>
-                </div>
+            <!-- Human Understandable Match Evidence -->
+            <div class="evidence-box">
+              <div class="evidence-header">
+                <span>Match Evidence</span>
+              </div>
+              <ul id="evidence-bullets-list" class="evidence-list">
+                <!-- Generated bullet points -->
+              </ul>
+            </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-size: 0.95rem; font-weight: 600;">Overall Model Confidence</span>
-                  <span id="expl-conf-score" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">96.8%</span>
-                </div>
+            <!-- Decision Actions -->
+            <div class="action-bar">
+              <div class="decision-buttons">
+                <button id="btn-confirm-match" class="btn btn-success">
+                  <span>✓</span> Confirm Match
+                </button>
+                <button id="btn-reject-match" class="btn btn-danger">
+                  <span>✕</span> Reject Match
+                </button>
+                <button id="btn-review-later" class="btn btn-warning">
+                  <span>⏳</span> Review Later
+                </button>
+              </div>
+              <div>
+                <button id="btn-next-inline" class="btn btn-secondary">
+                  <span>Next Business &rarr;</span>
+                </button>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- ── TAB 4: BATCH MATCHING PAGE ────────────────────────────────── -->
+        <!-- ── TAB 4: REVIEW QUEUE ───────────────────────────────────────── -->
+        <section id="tab-queue" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Review Queue</h2>
+                <p class="card-subtitle">Businesses pending analyst verification, grouped by confidence tier.</p>
+              </div>
+              <div>
+                <button id="btn-seed-queue" class="btn btn-secondary btn-sm">
+                  <span>+</span> Load Pending Records
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-tabs">
+              <button class="filter-tab active" data-queue-filter="all">All</button>
+              <button class="filter-tab" data-queue-filter="high">High Confidence</button>
+              <button class="filter-tab" data-queue-filter="medium">Medium Confidence</button>
+              <button class="filter-tab" data-queue-filter="low">Low Confidence</button>
+              <button class="filter-tab" data-queue-filter="multiple">Multiple Candidates</button>
+              <button class="filter-tab" data-queue-filter="no_match">No Match</button>
+            </div>
+
+            <div id="queue-items-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ── TAB 5: BATCH MATCHING ─────────────────────────────────────── -->
         <section id="tab-batch" class="tab-panel">
           <div class="card">
             <div class="card-header">
               <div>
                 <h2 class="card-title">Batch Matching</h2>
-                <p class="card-desc">Upload a TSV file of Source 1 records to run entity resolution across the entire batch.</p>
+                <p class="card-subtitle">Execute high-throughput entity matching across Source 1 reference records.</p>
               </div>
             </div>
 
-            <!-- Drag and drop zone -->
-            <div id="batch-dropzone" class="dropzone">
-              <div class="dropzone-icon">📁</div>
-              <h3 style="font-size: 1.1rem; color: var(--text-primary);">Drop your TSV file here</h3>
-              <p style="font-size: 0.85rem; color: var(--text-secondary);">or click to select from your computer</p>
-              <input type="file" id="batch-file-input" accept=".tsv,.txt,.csv" style="display: none;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('batch-file-input').click()">
-                Choose File
-              </button>
+            <div style="background: var(--bg-card-secondary); padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+              <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 8px;">Upload Source 1 TSV</div>
+              <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <input type="file" id="batch-file-input" class="form-input" style="padding: 6px;">
+                <span id="batch-file-status" style="font-size: 0.85rem; color: var(--text-secondary);">Records detected: 10,000 (Source 1 Sample)</span>
+              </div>
+              <div style="margin-top: 14px;">
+                <button id="btn-start-batch" class="btn btn-primary btn-lg">
+                  <span>⚡</span> Start Matching
+                </button>
+              </div>
             </div>
 
-            <!-- Upload Details Area (Hidden by default) -->
-            <div id="batch-file-details" style="display: none; margin-top: 24px;">
-              <div style="background-color: var(--bg-secondary); padding: 16px 20px; border-radius: var(--radius-md); margin-bottom: 20px;">
-                <h4 style="font-size: 0.92rem; color: var(--text-primary); margin-bottom: 10px;">File Upload Summary</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 0.85rem;">
-                  <div>File name: <strong id="batch-filename">--</strong></div>
-                  <div>Number of records: <strong id="batch-records-count">--</strong></div>
-                  <div>Detected columns: <strong id="batch-columns-detected">--</strong></div>
-                  <div>Validation status: <span id="batch-validation-badge" class="badge badge-high">Valid Format</span></div>
+            <!-- Progress Bar -->
+            <div id="batch-progress-container" style="display: none; margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">
+                <span id="batch-progress-label">Processing records...</span>
+                <span id="batch-progress-pct">0%</span>
+              </div>
+              <div class="progress-bar-wrap">
+                <div id="batch-progress-fill" class="progress-bar-fill"></div>
+              </div>
+            </div>
+
+            <!-- Summary Results (hidden until run) -->
+            <div id="batch-results-box" style="display: none; background: var(--bg-card-secondary); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-primary);">Batch Run Complete</h3>
+              <div class="kpi-row" style="margin-bottom: 16px;">
+                <div class="kpi-card">
+                  <span class="kpi-title">Records Processed</span>
+                  <span id="batch-res-total" class="kpi-value">10,000</span>
+                </div>
+                <div class="kpi-card">
+                  <span class="kpi-title">Potential Matches</span>
+                  <span id="batch-res-matches" class="kpi-value text-success" style="color: var(--success);">7,832</span>
+                </div>
+                <div class="kpi-card">
+                  <span class="kpi-title">No Matches (Singletons)</span>
+                  <span id="batch-res-nomatches" class="kpi-value text-muted">2,168</span>
                 </div>
               </div>
 
-              <button id="btn-run-batch" class="btn btn-primary btn-lg">
-                <span>🚀</span> RUN MATCHING
-              </button>
-            </div>
-
-            <!-- Batch Results Area -->
-            <div id="batch-results-box" style="display: none; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px;">
-              <div class="kpi-row">
-                <div class="kpi-card">
-                  <span class="kpi-card-title">Records Processed</span>
-                  <span id="batch-kpi-processed" class="kpi-card-val">10,000</span>
-                </div>
-                <div class="kpi-card">
-                  <span class="kpi-card-title">Matches Found</span>
-                  <span id="batch-kpi-matched" class="kpi-card-val text-success">7,847</span>
-                </div>
-                <div class="kpi-card">
-                  <span class="kpi-card-title">No Matches (Singletons)</span>
-                  <span id="batch-kpi-unmatched" class="kpi-card-val text-warning">2,153</span>
-                </div>
-                <div class="kpi-card">
-                  <span class="kpi-card-title">Processing Time</span>
-                  <span id="batch-kpi-time" class="kpi-card-val text-accent">16.2s</span>
-                </div>
-              </div>
-
-              <div style="display: flex; gap: 12px;">
-                <a href="/api/download/matching_results.tsv" class="btn btn-primary">
-                  <span>📥</span> Download matching_results.tsv
-                </a>
-                <a href="/api/download/candidate_pairs.tsv" class="btn btn-secondary">
-                  <span>📥</span> Download candidate_pairs.tsv
-                </a>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button id="btn-batch-review-results" class="btn btn-primary">Review Results</button>
+                <a href="/api/download/matching_results.tsv" class="btn btn-secondary" download>Download matching_results.tsv</a>
+                <a href="/api/download/candidate_pairs.tsv" class="btn btn-secondary" download>Download candidate_pairs.tsv</a>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- ── TAB 5: MODEL PERFORMANCE PAGE ─────────────────────────────── -->
-        <section id="tab-performance" class="tab-panel">
+        <!-- ── TAB 6: RESOLVED ENTITIES ──────────────────────────────────── -->
+        <section id="tab-resolved" class="tab-panel">
           <div class="card">
             <div class="card-header">
               <div>
-                <h2 class="card-title">Model Performance</h2>
-                <p class="card-desc">Real validation metrics computed with grouped entity split (preventing data leakage).</p>
+                <h2 class="card-title">Resolved Entities</h2>
+                <p class="card-subtitle">Audit log of completed decisions recorded by analysts.</p>
               </div>
-              <span class="badge badge-high">Decision Threshold: 0.95</span>
-            </div>
-
-            <!-- Metric Cards -->
-            <div class="kpi-row">
-              <div class="kpi-card">
-                <span class="kpi-card-title">Candidate Recall</span>
-                <span id="perf-recall" class="kpi-card-val text-success">88.92%</span>
-                <span style="font-size: 0.75rem; color: var(--text-secondary);">True match coverage</span>
-              </div>
-
-              <div class="kpi-card">
-                <span class="kpi-card-title">Precision</span>
-                <span id="perf-precision" class="kpi-card-val text-accent">98.94%</span>
-                <span style="font-size: 0.75rem; color: var(--text-secondary);">Positive link accuracy</span>
-              </div>
-
-              <div class="kpi-card">
-                <span class="kpi-card-title">Recall</span>
-                <span id="perf-rec-score" class="kpi-card-val">90.03%</span>
-                <span style="font-size: 0.75rem; color: var(--text-secondary);">Target pair retrieval</span>
-              </div>
-
-              <div class="kpi-card">
-                <span class="kpi-card-title">F0.5 Score</span>
-                <span id="perf-f05" class="kpi-card-val text-accent">0.9437</span>
-                <span style="font-size: 0.75rem; color: var(--text-secondary);">Precision-weighted metric</span>
+              <div>
+                <a href="/api/download/review_report.csv" class="btn btn-secondary btn-sm" download>
+                  <span>📥</span> Download Review Report (CSV)
+                </a>
               </div>
             </div>
 
-            <!-- Threshold Grid Table -->
-            <h3 style="margin-bottom: 12px;">Validation Threshold Tuning</h3>
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Threshold</th>
-                    <th>Validation Macro F0.5</th>
-                    <th>Precision</th>
-                    <th>Recall</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="perf-grid-body">
-                  <!-- Dynamically populated from /api/evaluation -->
-                </tbody>
-              </table>
+            <div class="filter-tabs">
+              <button class="filter-tab active" data-resolved-filter="all">All</button>
+              <button class="filter-tab" data-resolved-filter="confirmed">Confirmed</button>
+              <button class="filter-tab" data-resolved-filter="rejected">Rejected</button>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Business</th>
+                  <th>Source 1 ID</th>
+                  <th>Matched Record</th>
+                  <th>Decision</th>
+                  <th>Confidence</th>
+                  <th>Reviewed By</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="resolved-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ── TAB 7: HISTORY ────────────────────────────────────────────── -->
+        <section id="tab-history" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Business History</h2>
+                <p class="card-subtitle">Chronological audit trail of analyst actions.</p>
+              </div>
+            </div>
+
+            <div id="history-feed-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ── TAB 8: SETTINGS & ADMIN ───────────────────────────────────── -->
+        <section id="tab-settings" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Settings</h2>
+                <p class="card-subtitle">Operational parameters and ML engine configuration.</p>
+              </div>
+            </div>
+
+            <div style="max-width: 600px; display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Matching Threshold</label>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <input type="range" id="setting-threshold-range" min="0.50" max="0.99" step="0.01" value="0.95" style="flex: 1;">
+                  <span id="setting-threshold-val" style="font-weight: 700; width: 45px;">0.95</span>
+                </div>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Calibrated optimal cutoff ($F_{0.5} = 0.9437$).</span>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Candidate Retrieval Limit</label>
+                <input type="number" id="setting-cand-limit" class="form-input" value="50" min="10" max="200" style="width: 100%;">
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Search Results Limit</label>
+                <input type="number" id="setting-search-limit" class="form-input" value="20" min="5" max="100" style="width: 100%;">
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Analyst Name</label>
+                <input type="text" id="setting-analyst-name" class="form-input" value="Operations Lead" style="width: 100%;">
+              </div>
+
+              <div>
+                <button id="btn-save-settings" class="btn btn-primary">Save Settings</button>
+              </div>
+            </div>
+
+            <!-- Technical Model Performance (Collapsible Accordion for ML users) -->
+            <div style="margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border-color);">
+              <details>
+                <summary style="font-size: 0.92rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); outline: none;">
+                  Model Performance & Validation Metrics (Technical Details)
+                </summary>
+                <div style="margin-top: 16px;">
+                  <div class="kpi-row">
+                    <div class="kpi-card">
+                      <span class="kpi-title">Candidate Recall</span>
+                      <span id="perf-recall" class="kpi-value text-success" style="color: var(--success);">88.92%</span>
+                    </div>
+                    <div class="kpi-card">
+                      <span class="kpi-title">Precision</span>
+                      <span id="perf-precision" class="kpi-value" style="color: var(--primary);">98.94%</span>
+                    </div>
+                    <div class="kpi-card">
+                      <span class="kpi-title">Recall</span>
+                      <span id="perf-rec" class="kpi-value">90.03%</span>
+                    </div>
+                    <div class="kpi-card">
+                      <span class="kpi-title">Macro F0.5</span>
+                      <span id="perf-f05" class="kpi-value" style="color: var(--primary);">0.9437</span>
+                    </div>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Threshold</th>
+                        <th>Validation Macro F0.5</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="perf-grid-body">
+                      <!-- Dynamically loaded -->
+                    </tbody>
+                  </table>
+                </div>
+              </details>
             </div>
           </div>
         </section>
       </main>
     </div>
   </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
 
   <script src="/static/js/app.js"></script>
 </body>

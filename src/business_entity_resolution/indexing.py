@@ -79,40 +79,68 @@ def init_search_db(s1_file: str = config.SAMPLE_SOURCE1, db_path: str = DB_PATH)
     conn.close()
     return db_path
 
-def search_source1(query: str, limit: int = 15, db_path: str = DB_PATH) -> List[Dict[str, Any]]:
+def search_source1(
+    query: str = "",
+    country: str = "",
+    limit: int = 20,
+    db_path: str = DB_PATH
+) -> List[Dict[str, Any]]:
     """
-    Searches Source 1 entities by ID, name, or address using prefix and substring matching.
+    Searches Source 1 entities by ID, multi-token partial name, or address with optional country filter.
     """
     if not os.path.exists(db_path):
         init_search_db(db_path=db_path)
         
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    
     q = query.strip()
+    c = country.strip()
+    
+    where_clauses = []
+    params: List[Any] = []
+    
+    if c and c.lower() != "all" and c.lower() != "all countries":
+        where_clauses.append("country = ?")
+        params.append(c)
+        
     if not q:
-        # Return recent / top records
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT entity_id, business_name, business_address, country FROM source1 LIMIT ?;", (limit,))
+        where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
+        cur.execute(f"SELECT entity_id, business_name, business_address, country FROM source1 {where_sql} LIMIT ?;", tuple(params + [limit]))
         rows = cur.fetchall()
         conn.close()
         return [{"entity_id": r[0], "business_name": r[1], "business_address": r[2], "country": r[3]} for r in rows]
         
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    
-    # Direct exact ID match
-    cur.execute("SELECT entity_id, business_name, business_address, country FROM source1 WHERE entity_id = ? LIMIT 1;", (q,))
-    exact = cur.fetchall()
-    if exact:
-        conn.close()
-        return [{"entity_id": exact[0][0], "business_name": exact[0][1], "business_address": exact[0][2], "country": exact[0][3]}]
+    # Check for exact ID match first
+    if not c:
+        cur.execute("SELECT entity_id, business_name, business_address, country FROM source1 WHERE entity_id = ? LIMIT 1;", (q,))
+        exact = cur.fetchall()
+        if exact:
+            conn.close()
+            return [{"entity_id": exact[0][0], "business_name": exact[0][1], "business_address": exact[0][2], "country": exact[0][3]}]
+            
+    # Multi-token matching: e.g. "ABC Tech" requires both "ABC" and "Tech" in the name/address/id
+    tokens = [t for t in q.split() if len(t) >= 2]
+    if not tokens:
+        tokens = [q]
         
-    # Like / Prefix Search
-    like_q = f"%{q}%"
-    cur.execute("""
+    token_clauses = []
+    for tok in tokens:
+        like_tok = f"%{tok}%"
+        token_clauses.append("(entity_id LIKE ? OR business_name LIKE ? OR business_address LIKE ?)")
+        params.extend([like_tok, like_tok, like_tok])
+        
+    where_clauses.append("(" + " AND ".join(token_clauses) + ")")
+    where_sql = "WHERE " + " AND ".join(where_clauses)
+    
+    query_sql = f"""
         SELECT entity_id, business_name, business_address, country FROM source1
-        WHERE entity_id LIKE ? OR business_name LIKE ? OR business_address LIKE ?
+        {where_sql}
         LIMIT ?;
-    """, (like_q, like_q, like_q, limit))
+    """
+    params.append(limit)
+    
+    cur.execute(query_sql, tuple(params))
     rows = cur.fetchall()
     conn.close()
     
@@ -131,3 +159,30 @@ def get_source1_by_id(entity_id: str, db_path: str = DB_PATH) -> Optional[Dict[s
     if row:
         return {"entity_id": row[0], "business_name": row[1], "business_address": row[2], "country": row[3]}
     return None
+
+def get_next_source1_id(current_id: str, db_path: str = DB_PATH) -> Optional[str]:
+    """Finds the next sequential Source 1 entity for seamless next-record review."""
+    if not os.path.exists(db_path):
+        return None
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT entity_id FROM source1 
+        WHERE rowid > (SELECT rowid FROM source1 WHERE entity_id = ? LIMIT 1) 
+        ORDER BY rowid ASC LIMIT 1;
+    """, (current_id.strip(),))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row else None
+
+def get_distinct_countries(db_path: str = DB_PATH) -> List[str]:
+    """Returns sorted distinct countries present in the dataset."""
+    if not os.path.exists(db_path):
+        return ["US", "CA", "GB", "IN", "DE", "FR", "AU"]
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute("SELECT DISTINCT country FROM source1 WHERE country IS NOT NULL AND country != '' ORDER BY country ASC;")
+    rows = cur.fetchall()
+    conn.close()
+    countries = [r[0].strip() for r in rows if r[0].strip()]
+    return countries if countries else ["US", "CA", "GB", "IN", "DE", "FR", "AU"]
